@@ -14,15 +14,23 @@ Class resizer {
      */
     public function __construct($imgToResize) {
 
-        $this->imageInfo = getimagesize($imgToResize);
-        $this->type = $this->imageInfo['mime'];
+        if (file_exists($imgToResize)) {
 
-        // set original image dimensions
-        $this->inputWidth = $this->imageInfo[0];
-        $this->inputHeight = $this->imageInfo[1];
+            $this->imageInfo = getimagesize($imgToResize);
+            $this->type = $this->imageInfo['mime'];
 
-        // load image data to be resized
-        $this->imageIn = $this->load($imgToResize);
+            // set original image dimensions
+            $this->inputWidth = $this->imageInfo[0];
+            $this->inputHeight = $this->imageInfo[1];
+
+            // load image data to be resized
+            $this->imageIn = $this->load($imgToResize);
+
+        } else {
+
+            throw new Exception($imgToResize.' was not found.');
+
+        }
 
     }
 
@@ -50,7 +58,7 @@ Class resizer {
                 break;
 
             default:
-                echo "got me on that one";
+                throw new Exception('File type: '.$this->type.' is not a recognised image type.');
                 break;
         }
 
@@ -93,7 +101,7 @@ Class resizer {
                 break;
 
             default:
-                # code...
+                throw new Exception('Unable to save, not recognised as valid image type.');
                 break;
         }
     }
