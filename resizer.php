@@ -18,7 +18,7 @@ Class resizer {
 		$this->inputHeight = $this->imageInfo[1];
 
 		// open image to be resized
-		$this->img = $this->load($imgToResize);
+		$this->imageIn = $this->load($imgToResize);
 
 	}
 
@@ -52,7 +52,7 @@ Class resizer {
 	public function resize($outputWidth, $outputHeight) {
 
 		$this->imageOut = imagecreatetruecolor($outputWidth, $outputHeight);
-		imagecopyresampled($imageOut, $imageIn, 0, 0, 0, 0, $outputWidth, $outputHeight, $this->inputWidth, $this->inputHeight);
+		imagecopyresampled($this->imageOut, $this->imageIn, 0, 0, 0, 0, $outputWidth, $outputHeight, $this->inputWidth, $this->inputHeight);
 	}
 
 	public function save($target, $quality) {
@@ -77,7 +77,5 @@ Class resizer {
 				# code...
 				break;
 		}
-
 	}
-
-?>
+}
