@@ -55,4 +55,29 @@ Class resizer {
 		imagecopyresampled($imageOut, $imageIn, 0, 0, 0, 0, $outputWidth, $outputHeight, $this->inputWidth, $this->inputHeight);
 	}
 
+	public function save($target, $quality) {
+
+		switch ($this->type) {
+			
+			case 'image/jpeg':
+			case 'image/pjpeg':
+				imagejpeg($this->imageOut, $target, $quality);      // quality for jpeg is 0-100
+				break;
+
+			case 'image/png':
+			case 'image/x-png':
+				imagepng($this->imageOut, $target, $quality);        // quality for png is 0-9
+				break;
+
+			case 'image/gif':
+				imagegif($this->imageOut, $target);
+				break;
+			
+			default:
+				# code...
+				break;
+		}
+
+	}
+
 ?>
