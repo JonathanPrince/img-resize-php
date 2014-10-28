@@ -3,9 +3,10 @@
 Class resizer {
 
 	private $imageInfo;
-	private $width;
-	private $height;
-	private $img;
+	private $inputWidth;
+	private $inputHeight;
+	private $imageIn;
+	private $imageOut;
 
 	public function __construct($imgToResize) {
 
@@ -13,8 +14,8 @@ Class resizer {
 		$this->type = $this->imageInfo['mime'];
 
 		// set original dimensions
-		$this->width = $this->imageInfo[0];
-		$this->height = $this->imageInfo[1];
+		$this->inputWidth = $this->imageInfo[0];
+		$this->inputHeight = $this->imageInfo[1];
 
 		// open image to be resized
 		$this->img = $this->load($imgToResize);
@@ -46,6 +47,12 @@ Class resizer {
 
 		return $img;
 
+	}
+
+	public function resize($outputWidth, $outputHeight) {
+
+		$this->imageOut = imagecreatetruecolor($outputWidth, $outputHeight);
+		imagecopyresampled($imageOut, $imageIn, 0, 0, 0, 0, $outputWidth, $outputHeight, $this->inputWidth, $this->inputHeight);
 	}
 
 ?>
