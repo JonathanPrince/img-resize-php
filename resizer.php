@@ -2,80 +2,80 @@
 
 Class resizer {
 
-	private $imageInfo;
-	private $inputWidth;
-	private $inputHeight;
-	private $imageIn;
-	private $imageOut;
+    private $imageInfo;
+    private $inputWidth;
+    private $inputHeight;
+    private $imageIn;
+    private $imageOut;
 
-	public function __construct($imgToResize) {
+    public function __construct($imgToResize) {
 
-		$this->imageInfo = getimagesize($imgToResize);
-		$this->type = $this->imageInfo['mime'];
+        $this->imageInfo = getimagesize($imgToResize);
+        $this->type = $this->imageInfo['mime'];
 
-		// set original dimensions
-		$this->inputWidth = $this->imageInfo[0];
-		$this->inputHeight = $this->imageInfo[1];
+        // set original dimensions
+        $this->inputWidth = $this->imageInfo[0];
+        $this->inputHeight = $this->imageInfo[1];
 
-		// open image to be resized
-		$this->imageIn = $this->load($imgToResize);
+        // open image to be resized
+        $this->imageIn = $this->load($imgToResize);
 
-	}
+    }
 
-	private function load($imgToResize) {
+    private function load($imgToResize) {
 
-		switch ($this->type) {
-			
-			case 'image/jpeg':
-			case 'image/pjpeg':
-				$img = @imagecreatefromjpeg($imgToResize);
-				break;
+        switch ($this->type) {
 
-			case 'image/png':
-			case 'image/x-png':
-				$img = @imagecreatefrompng($imgToResize);
-				break;
+            case 'image/jpeg':
+            case 'image/pjpeg':
+                $img = @imagecreatefromjpeg($imgToResize);
+                break;
 
-			case 'image/gif':
-				$img = @imagecreatefromgif($imgToResize);
-				break;
-			
-			default:
-				echo "got me on that one";
-				break;
-		}
+            case 'image/png':
+            case 'image/x-png':
+                $img = @imagecreatefrompng($imgToResize);
+                break;
 
-		return $img;
+            case 'image/gif':
+                $img = @imagecreatefromgif($imgToResize);
+                break;
 
-	}
+            default:
+                echo "got me on that one";
+                break;
+        }
 
-	public function resize($outputWidth, $outputHeight) {
+        return $img;
 
-		$this->imageOut = imagecreatetruecolor($outputWidth, $outputHeight);
-		imagecopyresampled($this->imageOut, $this->imageIn, 0, 0, 0, 0, $outputWidth, $outputHeight, $this->inputWidth, $this->inputHeight);
-	}
+    }
 
-	public function save($target, $quality) {
+    public function resize($outputWidth, $outputHeight) {
 
-		switch ($this->type) {
-			
-			case 'image/jpeg':
-			case 'image/pjpeg':
-				imagejpeg($this->imageOut, $target, $quality);      // quality for jpeg is 0-100
-				break;
+        $this->imageOut = imagecreatetruecolor($outputWidth, $outputHeight);
+        imagecopyresampled($this->imageOut, $this->imageIn, 0, 0, 0, 0, $outputWidth, $outputHeight, $this->inputWidth, $this->inputHeight);
+    }
 
-			case 'image/png':
-			case 'image/x-png':
-				imagepng($this->imageOut, $target, $quality);        // quality for png is 0-9
-				break;
+    public function save($target, $quality) {
 
-			case 'image/gif':
-				imagegif($this->imageOut, $target);
-				break;
-			
-			default:
-				# code...
-				break;
-		}
-	}
+        switch ($this->type) {
+
+            case 'image/jpeg':
+            case 'image/pjpeg':
+                imagejpeg($this->imageOut, $target, $quality);      // quality for jpeg is 0-100
+                break;
+
+            case 'image/png':
+            case 'image/x-png':
+                imagepng($this->imageOut, $target, $quality);        // quality for png is 0-9
+                break;
+
+            case 'image/gif':
+                imagegif($this->imageOut, $target);
+                break;
+
+            default:
+                # code...
+                break;
+        }
+    }
 }
