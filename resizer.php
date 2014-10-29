@@ -73,8 +73,30 @@ Class resizer {
      */
     public function resize($outputWidth, $outputHeight) {
 
+        // set default sample to match original dimensions
+        $sample_width  = $this->inputWidth;
+        $sample_height = $this->inputHeight;
+
+        // get aspect ratios
+        $output_aspect_ratio = $outputHeight / $outputWidth;
+        $input_aspect_ratio  = $this->inputHeight / $this->inputWidth;
+
+        // change sample dimensions to crop if needed
+        if ($input_aspect_ratio > $output_aspect_ratio){
+
+            $sample_height = round($this->inputWidth * $output_aspect_ratio);
+
+        } else if ($input_aspect_ratio < $output_aspect_ratio) {
+
+            $sample_width = round($this->inputHeight / $output_aspect_ratio);
+
+        }
+
+        // create canvas for output image
         $this->imageOut = imagecreatetruecolor($outputWidth, $outputHeight);
-        imagecopyresampled($this->imageOut, $this->imageIn, 0, 0, 0, 0, $outputWidth, $outputHeight, $this->inputWidth, $this->inputHeight);
+
+        // imagecopyresampled( $dst_image, $src_image, $dst_x, $dst_y, $src_x, $src_y, $dst_w, $dst_h, $src_w, $src_h )
+        imagecopyresampled($this->imageOut, $this->imageIn, 0, 0, 0, 0, $outputWidth, $outputHeight, $sample_width, $sample_height);
     }
 
     /**
