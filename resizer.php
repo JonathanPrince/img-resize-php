@@ -67,15 +67,16 @@ Class resizer {
     }
 
     /**
-     * Create new image with desired size
+     * get dimensions for sample area
      * @param integer $outputWidth new image width
      * @param integer $outputHeight new image height
+     * @return array('width' => integer, 'height' => integer)
      */
-    public function resize($outputWidth, $outputHeight) {
+    private function getSampleSize($outputWidth, $outputHeight) {
 
         // set default sample to match original dimensions
-        $sample_width  = $this->inputWidth;
-        $sample_height = $this->inputHeight;
+        $width  = $this->inputWidth;
+        $height = $this->inputHeight;
 
         // get aspect ratios
         $output_aspect_ratio = $outputHeight / $outputWidth;
@@ -84,13 +85,31 @@ Class resizer {
         // change sample dimensions to crop if needed
         if ($input_aspect_ratio > $output_aspect_ratio){
 
-            $sample_height = round($this->inputWidth * $output_aspect_ratio);
+            $height = round($this->inputWidth * $output_aspect_ratio);
 
         } else if ($input_aspect_ratio < $output_aspect_ratio) {
 
-            $sample_width = round($this->inputHeight / $output_aspect_ratio);
+            $width = round($this->inputHeight / $output_aspect_ratio);
 
         }
+
+        return array(
+            'width'  => $width,
+            'height' => $height
+        );
+
+    }
+
+    /**
+     * Create new image with desired size
+     * @param integer $outputWidth new image width
+     * @param integer $outputHeight new image height
+     */
+    public function resize($outputWidth, $outputHeight) {
+
+        $sampleSize  = $this->getSampleSize($outputWidth, $outputHeight);
+        $sample_width  = $sampleSize['width'];
+        $sample_height = $sampleSize['height'];
 
         // create canvas for output image
         $this->imageOut = imagecreatetruecolor($outputWidth, $outputHeight);
