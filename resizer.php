@@ -130,20 +130,21 @@ Class resizer {
             case 'image/jpeg':
             case 'image/pjpeg':
                 imagejpeg($this->imageOut, $target, $quality);      // quality for jpeg is 0-100
-                break;
+                return true;
 
             case 'image/png':
             case 'image/x-png':
                 imagepng($this->imageOut, $target, $quality);        // quality for png is 0-9
-                break;
+                return true;
 
             case 'image/gif':
                 imagegif($this->imageOut, $target);
-                break;
+                return true;
 
             default:
                 throw new Exception('Unable to save, not recognised as valid image type.');
-                break;
+                return false;
         }
+
     }
 }
