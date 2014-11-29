@@ -125,6 +125,10 @@ Class resizer {
      */
     public function save($target, $quality) {
 
+        if ($quality < 1 ||  $quality > 10) {
+            trigger_error("Quality setting should be a number between 1 and 10", E_USER_ERROR);
+        }
+
         switch ($this->type) {
 
             case 'image/jpeg':
