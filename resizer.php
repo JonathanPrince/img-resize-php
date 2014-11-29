@@ -121,20 +121,28 @@ Class resizer {
     /**
      * Save new image
      * @param location $target path and filename for new image
-     * @param integer $quality quality level to use when saving new image
+     * @param integer $quality quality level to use when saving new image: 1(low quality) to 10(high quality)
      */
     public function save($target, $quality) {
+
+        if ($quality < 1 ||  $quality > 10) {
+            trigger_error("Quality setting should be a number between 1 and 10", E_USER_ERROR);
+        }
 
         switch ($this->type) {
 
             case 'image/jpeg':
             case 'image/pjpeg':
-                imagejpeg($this->imageOut, $target, $quality);      // quality for jpeg is 0-100
+                // quality for jpeg is 0(worst quality, smaller file) - 100(best quality, biggest file)
+                $quality = $quality * 10;
+                imagejpeg($this->imageOut, $target, $quality);
                 return true;
 
             case 'image/png':
             case 'image/x-png':
-                imagepng($this->imageOut, $target, $quality);        // quality for png is 0-9
+                $quality = 10 - $quality;
+                // quality for png is 0(no compression) - 9(lots of compression)
+                imagepng($this->imageOut, $target, $quality);
                 return true;
 
             case 'image/gif':
